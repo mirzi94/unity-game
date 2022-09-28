@@ -13,9 +13,14 @@ public class PlayerController : MonoBehaviour
     Collider planecollider;
     RaycastHit hit;
     Ray ray;
+    public Canvas CanvasLevelOver;
     public Transform pickups;
     public InputField InputFieldPickupAmount;
-
+    public Text TextEndMessage;
+    public InputField InputFieldTimeLeft;
+    public int StartTime = 30;
+    
+    private int TimeLeft;
     private int pickupsAtStart;
     private int pickupsCollected;
 
@@ -27,6 +32,12 @@ public class PlayerController : MonoBehaviour
         planecollider = GameObject.Find("Plane").GetComponent<Collider>();
 
         pickupsAtStart = pickups.childCount;
+
+        CanvasLevelOver.enabled = false;
+        TimeLeft = StartTime; //reset the level time left
+        InputFieldTimeLeft.text = TimeLeft.ToString();
+        Time.timeScale = 1;//unfreeze time
+
         StartCoroutine("updateGameStatus");
     }
 
@@ -34,9 +45,30 @@ public class PlayerController : MonoBehaviour
     {
         for (; ; )
         {
+            yield return new WaitForSeconds(1.0f);
+            if (TimeLeft > 0)
+                TimeLeft--;
             pickupsCollected = pickupsAtStart - pickups.childCount;
             InputFieldPickupAmount.text = pickupsCollected.ToString();
-            yield return new WaitForSeconds(1.0f);
+            
+            InputFieldTimeLeft.text = TimeLeft.ToString();
+            if (pickups.childCount == 0) // no pickups left? --> win level!
+            {
+                TextEndMessage.text = "Level completed!";
+                //int ElapsedTime = StartTime - TimeLeft;
+                CanvasLevelOver.enabled = true;  // level over menu visible
+                Time.timeScale = 0; //freeze time
+                break;
+
+            }
+   
+            else if (TimeLeft <= 0)//lost level and game!
+            {
+            CanvasLevelOver.enabled = true;
+            TextEndMessage.text = "Game over!";
+            Time.timeScale = 0; //freeze time
+            break;
+            }
         }
     }
 
@@ -48,7 +80,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 5));
+        
         ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
@@ -58,5 +90,10 @@ public class PlayerController : MonoBehaviour
                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
             }
         }
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
