@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class movement : MonoBehaviour
+
+public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
 
@@ -10,12 +13,36 @@ public class movement : MonoBehaviour
     Collider planecollider;
     RaycastHit hit;
     Ray ray;
+    public Transform pickups;
+    public InputField InputFieldPickupAmount;
+
+    private int pickupsAtStart;
+    private int pickupsCollected;
+
 
     void Start()
 
     {
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         planecollider = GameObject.Find("Plane").GetComponent<Collider>();
+
+        pickupsAtStart = pickups.childCount;
+        StartCoroutine("updateGameStatus");
+    }
+
+    IEnumerator updateGameStatus()
+    {
+        for (; ; )
+        {
+            pickupsCollected = pickupsAtStart - pickups.childCount;
+            InputFieldPickupAmount.text = pickupsCollected.ToString();
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 
     // Update is called once per frame
