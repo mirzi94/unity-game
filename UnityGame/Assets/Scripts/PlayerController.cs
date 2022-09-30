@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour
     Collider planecollider;
     RaycastHit hit;
     Ray ray;
+    Rigidbody rb;
     public Canvas CanvasLevelOver;
     public Transform pickups;
     public InputField InputFieldPickupAmount;
     public Text TextEndMessage;
     public InputField InputFieldTimeLeft;
     public int StartTime = 30;
+    public bool isGrounded;
     
     private int TimeLeft;
     private int pickupsAtStart;
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     {
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        planecollider = GameObject.Find("Plane").GetComponent<Collider>();
+        planecollider = GameObject.Find("Ground").GetComponent<Collider>();
 
         pickupsAtStart = pickups.childCount;
 
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour
         TimeLeft = StartTime; //reset the level time left
         InputFieldTimeLeft.text = TimeLeft.ToString();
         Time.timeScale = 1;//unfreeze time
+        rb = this.GetComponent<Rigidbody>();
+        isGrounded = false;
 
         StartCoroutine("updateGameStatus");
     }
@@ -89,6 +93,26 @@ public class PlayerController : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, hit.point, Time.deltaTime * 4);
                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
             }
+        }
+        if(isGrounded==true && Input.GetMouseButtonUp (0))
+        {
+            rb.AddForce(new Vector3(0f, 200f, 0f));
+        }
+
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.name == "Ground")
+        {
+            isGrounded = false;
         }
     }
 
