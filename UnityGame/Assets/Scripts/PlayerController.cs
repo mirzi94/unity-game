@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         
         ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
-        {
+        {            
             if (hit.collider == planecollider)
             {
                 transform.position = Vector3.MoveTowards(transform.position, hit.point, Time.deltaTime * 4);
