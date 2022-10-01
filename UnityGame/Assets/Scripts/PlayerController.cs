@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
         {            
             if (hit.collider == planecollider)
             {
-                transform.position = Vector3.MoveTowards(transform.position, hit.point, Time.deltaTime * 4);
+                transform.position = Vector3.MoveTowards(transform.position, hit.point, Time.deltaTime * 3);
                 transform.LookAt(new Vector3(hit.point.x, transform.position.y, hit.point.z));
             }
         }
