@@ -13,7 +13,7 @@ public class RotatingItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(0, Time.deltaTime*70, 0));
+        transform.Rotate(new Vector3(0, Time.deltaTime*90, 0));
         
     }
 }
