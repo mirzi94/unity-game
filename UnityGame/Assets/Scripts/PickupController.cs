@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PickupController : MonoBehaviour
 {
+    public AudioClip collectSound;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,7 @@ public class PickupController : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
+            AudioSource.PlayClipAtPoint(collectSound, transform.position);
             Destroy(gameObject); // Pickup will make suicide
         }
     }
