@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         }
         if(isGrounded==true && Input.GetMouseButtonUp (0))
         {
-            rb.AddForce(new Vector3(0f, 200f, 0f));
+            rb.AddForce(new Vector3(0f, 220f, 0f));
         }
 
     }
