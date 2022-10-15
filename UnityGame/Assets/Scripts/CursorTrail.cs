@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CursorTrail : MonoBehaviour
 {
-    public Color trailColor = new Color(1, 0, 0.38f);
+    public Color trailColor = new Color(1, 0, 0, 1);
     public float distanceFromCamera = 3;
     public float startWidth = 0.05f;
     public float endWidth = 0f;
