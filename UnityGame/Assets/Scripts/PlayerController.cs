@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public InputField InputFieldTimeLeft;
     public int StartTime = 30;
     public bool isGrounded;
-    
+    public AudioClip meow;
+
     private int TimeLeft;
     private int pickupsAtStart;
     private int pickupsCollected;
@@ -58,10 +59,12 @@ public class PlayerController : MonoBehaviour
             InputFieldTimeLeft.text = TimeLeft.ToString();
             if (pickups.childCount == 0) // no pickups left? --> win level!
             {
+                AudioSource.PlayClipAtPoint(meow, transform.position);
                 TextEndMessage.text = "Level completed!";
                 //int ElapsedTime = StartTime - TimeLeft;
                 CanvasLevelOver.enabled = true;  // level over menu visible
                 Time.timeScale = 0; //freeze time
+                
                 break;
 
             }
